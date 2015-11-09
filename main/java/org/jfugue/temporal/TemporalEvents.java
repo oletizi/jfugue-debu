@@ -19,6 +19,7 @@
 
 package org.jfugue.temporal;
 
+import org.jfugue.midi.NullMidiEvent;
 import org.jfugue.parser.Parser;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
@@ -40,7 +41,10 @@ public class TemporalEvents
     public class InstrumentEvent implements TemporalEvent {
         private byte instrument;
         public InstrumentEvent(byte instrument) { this.instrument = instrument; }
-        public void execute(Parser parser) { parser.fireInstrumentParsed(instrument); }
+
+        public void execute(Parser parser) {
+            parser.fireInstrumentParsed(new NullMidiEvent(), instrument);
+        }
     }
 
     public class TempoEvent implements TemporalEvent {
@@ -81,7 +85,10 @@ public class TemporalEvents
     public class ChannelPressureEvent implements TemporalEvent {
         private byte pressure;
         public ChannelPressureEvent(byte pressure) { this.pressure = pressure; }
-        public void execute(Parser parser) { parser.fireChannelPressureParsed(pressure); }
+
+        public void execute(Parser parser) {
+            parser.fireChannelPressureParsed(new NullMidiEvent(), pressure);
+        }
     }
 
     public class PolyphonicPressureEvent implements TemporalEvent {
@@ -99,7 +106,10 @@ public class TemporalEvents
     public class ControllerEvent implements TemporalEvent {
         private byte controller, value;
         public ControllerEvent(byte controller, byte value) { this.controller = controller; this.value = value; }
-        public void execute(Parser parser) { parser.fireControllerEventParsed(controller, value); }
+
+        public void execute(Parser parser) {
+            parser.fireControllerEventParsed(new NullMidiEvent(), controller, value);
+        }
     }
 
     public class LyricEvent implements TemporalEvent {
@@ -124,14 +134,20 @@ public class TemporalEvents
     public class NoteEvent implements DurationTemporalEvent {
         private Note note;
         public NoteEvent(Note note) { this.note = note; }
-        public void execute(Parser parser) { parser.fireNoteParsed(this.note); }
+
+        public void execute(Parser parser) {
+            parser.fireNoteParsed(new NullMidiEvent(), this.note);
+        }
         public double getDuration() { return this.note.getDuration(); }
     }
 
     public class ChordEvent implements DurationTemporalEvent {
         private Chord chord;
         public ChordEvent(Chord chord) { this.chord = chord; }
-        public void execute(Parser parser) { parser.fireChordParsed(this.chord); }
+
+        public void execute(Parser parser) {
+            parser.fireChordParsed(new NullMidiEvent(), this.chord);
+        }
         public double getDuration() { return this.chord.getNotes()[0].getDuration(); }
     }
 }

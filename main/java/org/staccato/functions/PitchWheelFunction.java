@@ -20,6 +20,7 @@
 package org.staccato.functions;
 
 import org.jfugue.midi.MidiTools;
+import org.jfugue.midi.NullMidiEvent;
 import org.staccato.StaccatoParserContext;
 import org.staccato.SubparserFunction;
 
@@ -45,11 +46,11 @@ public class PitchWheelFunction implements SubparserFunction
 	public void apply(String parameters, StaccatoParserContext context) {
 		String[] params = parameters.split(",");
 		if (params.length == 2) {
-			context.getParser().firePitchWheelParsed(Byte.parseByte(params[0].trim()), Byte.parseByte(params[1].trim()));	
+			context.getParser().firePitchWheelParsed(new NullMidiEvent(), Byte.parseByte(params[0].trim()), Byte.parseByte(params[1].trim()));
 		} 
 		else if (params.length == 1) {
 			int pitch = Integer.parseInt(params[0]);
-			context.getParser().firePitchWheelParsed(MidiTools.getLSB(pitch), MidiTools.getMSB(pitch));
+			context.getParser().firePitchWheelParsed(new NullMidiEvent(), MidiTools.getLSB(pitch), MidiTools.getMSB(pitch));
 		}
 	}
 	

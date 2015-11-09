@@ -19,6 +19,7 @@
 
 package org.jfugue.parser;
 
+import org.jfugue.midi.NullMidiEvent;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 
@@ -58,8 +59,8 @@ public class ChainingParserListenerAdapter extends Parser implements ParserListe
 	}
 
 	@Override
-	public void onInstrumentParsed(byte instrument) { 
-		fireInstrumentParsed(instrument);
+	public void onInstrumentParsed(byte instrument) {
+		fireInstrumentParsed(new NullMidiEvent(), instrument);
 	}
 
 	@Override
@@ -98,13 +99,13 @@ public class ChainingParserListenerAdapter extends Parser implements ParserListe
 	}
 
 	@Override
-	public void onPitchWheelParsed(byte lsb, byte msb) { 
-		firePitchWheelParsed(lsb, msb);
+	public void onPitchWheelParsed(byte lsb, byte msb) {
+		firePitchWheelParsed(new NullMidiEvent(), lsb, msb);
 	}
 
 	@Override
-	public void onChannelPressureParsed(byte pressure) { 
-		fireChannelPressureParsed(pressure);
+	public void onChannelPressureParsed(byte pressure) {
+		fireChannelPressureParsed(new NullMidiEvent(), pressure);
 	}
 
 	@Override
@@ -118,8 +119,8 @@ public class ChainingParserListenerAdapter extends Parser implements ParserListe
 	}
 
 	@Override
-	public void onControllerEventParsed(byte controller, byte value) { 
-		fireControllerEventParsed(controller, value);
+	public void onControllerEventParsed(byte controller, byte value) {
+		fireControllerEventParsed(new NullMidiEvent(), controller, value);
 	}
 
 	@Override
@@ -138,22 +139,22 @@ public class ChainingParserListenerAdapter extends Parser implements ParserListe
 	}
 
     @Override
-    public void onNotePressed(Note note) { 
-        fireNotePressed(note);
-    }
+		public void onNotePressed(Note note) {
+			fireNotePressed(new NullMidiEvent(), note);
+		}
 
     @Override
-    public void onNoteReleased(Note note) { 
-        fireNoteReleased(note);
-    }
+		public void onNoteReleased(Note note) {
+			fireNoteReleased(new NullMidiEvent(), note);
+		}
 
 	@Override
-	public void onNoteParsed(Note note) { 
-		fireNoteParsed(note);
+	public void onNoteParsed(Note note) {
+		fireNoteParsed(new NullMidiEvent(), note);
 	}
 
 	@Override
-	public void onChordParsed(Chord chord) { 
-		fireChordParsed(chord);
+	public void onChordParsed(Chord chord) {
+		fireChordParsed(new NullMidiEvent(), chord);
 	}
 }

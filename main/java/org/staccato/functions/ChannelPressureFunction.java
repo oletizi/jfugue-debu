@@ -19,6 +19,7 @@
 
 package org.staccato.functions;
 
+import org.jfugue.midi.NullMidiEvent;
 import org.staccato.StaccatoParserContext;
 import org.staccato.SubparserFunction;
 
@@ -44,7 +45,7 @@ public class ChannelPressureFunction implements SubparserFunction
 	public void apply(String parameters, StaccatoParserContext context) {
 		String[] params = parameters.split(",");
 		if (params.length == 1) {
-			context.getParser().fireChannelPressureParsed(Byte.parseByte(params[0].trim()));	
+			context.getParser().fireChannelPressureParsed(new NullMidiEvent(), Byte.parseByte(params[0].trim()));
 		} 
 	}
 	

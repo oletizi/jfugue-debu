@@ -19,23 +19,16 @@
  
 package org.jfugue.midi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
-import javax.sound.midi.MidiMessage;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.ShortMessage;
-import javax.sound.midi.SysexMessage;
-import javax.sound.midi.Track;
-
 import org.jfugue.parser.Parser;
 import org.jfugue.provider.KeyProviderFactory;
 import org.jfugue.theory.Note;
 import org.jfugue.theory.Scale;
+
+import javax.sound.midi.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MidiParser extends Parser
 {
@@ -212,8 +205,8 @@ public class MidiParser extends Parser
         noteObject.setDuration(getDurationInBeats(durationInTicks)); 
         noteObject.setOnVelocity(tempNote.noteOnVelocity);
         noteObject.setOffVelocity(noteOffVelocity);
-        fireNoteReleased(new Note(note).setOffVelocity(noteOffVelocity));
-        fireNoteParsed(noteObject);
+        fireNoteReleased(event, new Note(note).setOffVelocity(noteOffVelocity));
+        fireNoteParsed(event, noteObject);
     }    
     
     private void noteOn(int channel, MidiEvent event) {
@@ -230,8 +223,8 @@ public class MidiParser extends Parser
         } else {
         	noteCache.get(channel).put(note, new TempNote(event.getTick(), noteOnVelocity));
         }
-        
-        fireNotePressed(new Note(note).setOnVelocity(noteOnVelocity));
+
+        fireNotePressed(event, new Note(note).setOnVelocity(noteOnVelocity));
     }
         
     private void polyphonicAftertouch(int channel, MidiEvent event) {
@@ -239,19 +232,20 @@ public class MidiParser extends Parser
     }
     
     private void controlChange(int channel, MidiEvent event) {
-        fireControllerEventParsed(event.getMessage().getMessage()[1], event.getMessage().getMessage()[2]); 
+        fireControllerEventParsed(event, event.getMessage().getMessage()[1], event.getMessage().getMessage()[2]);
     }
         
     private void programChange(int channel, MidiEvent event) {
-        fireInstrumentParsed(event.getMessage().getMessage()[1]); 
+        fireInstrumentParsed(event, event.getMessage().getMessage()[1]);
     }
     
     private void channelAftertouch(int channel, MidiEvent event) {
-        fireChannelPressureParsed(event.getMessage().getMessage()[1]); 
+        fireChannelPressureParsed(event, event.getMessage().getMessage()[1]);
     }
-    
+
+
     private void pitchWheel(int channel, MidiEvent event) {
-        firePitchWheelParsed(event.getMessage().getMessage()[1], event.getMessage().getMessage()[2]); 
+        firePitchWheelParsed(event, event.getMessage().getMessage()[1], event.getMessage().getMessage()[2]);
     }
     
     private void tempoChanged(MetaMessage meta) {
@@ -287,10 +281,10 @@ public class MidiParser extends Parser
         double newTimeInBeats = getDurationInBeats(tick);
         if (this.expectedTimeInBeats[this.currentChannel] != newTimeInBeats) {
         	if (newTimeInBeats > expectedTimeInBeats[this.currentChannel]) {
-        		fireNoteParsed(Note.createRest(newTimeInBeats - expectedTimeInBeats[this.currentChannel]));
-        	} else {
-        		fireTrackBeatTimeRequested(newTimeInBeats);
-        	}
+              fireNoteParsed(new MidiEvent(null, tick), Note.createRest(newTimeInBeats - expectedTimeInBeats[this.currentChannel]));
+          } else {
+              fireTrackBeatTimeRequested(newTimeInBeats);
+          }
         }
         this.currentTimeInBeats[this.currentChannel] = newTimeInBeats;
     }

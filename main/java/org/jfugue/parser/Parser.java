@@ -19,11 +19,12 @@
 
 package org.jfugue.parser;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
+
+import javax.sound.midi.MidiEvent;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Parser {
     private CopyOnWriteArrayList<ParserListener> parserListeners;
@@ -80,11 +81,11 @@ public class Parser {
 	    }
 	}
 
-	public void fireInstrumentParsed(byte instrument) { 
-	    List<ParserListener> listeners = getParserListeners();
-	    for (ParserListener listener : listeners) {
-	        listener.onInstrumentParsed(instrument);
-	    }
+	public void fireInstrumentParsed(MidiEvent event, byte instrument) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onInstrumentParsed(instrument);
+		}
 	}
 
 	public void fireTempoChanged(int tempoBPM) { 
@@ -136,18 +137,18 @@ public class Parser {
 	    }
 	}
 
-	public void firePitchWheelParsed(byte lsb, byte msb) { 
-	    List<ParserListener> listeners = getParserListeners();
-	    for (ParserListener listener : listeners) {
-	        listener.onPitchWheelParsed(lsb, msb);
-	    }
+	public void firePitchWheelParsed(MidiEvent event, byte lsb, byte msb) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onPitchWheelParsed(lsb, msb);
+		}
 	}
 
-	public void fireChannelPressureParsed(byte pressure) { 
-	    List<ParserListener> listeners = getParserListeners();
-	    for (ParserListener listener : listeners) {
-	        listener.onChannelPressureParsed(pressure);
-	    }
+	public void fireChannelPressureParsed(MidiEvent event, byte pressure) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onChannelPressureParsed(pressure);
+		}
 	}
 
 	public void firePolyphonicPressureParsed(byte key, byte pressure) { 
@@ -164,11 +165,11 @@ public class Parser {
 	    }
 	}
 
-	public void fireControllerEventParsed(byte controller, byte value) { 
-	    List<ParserListener> listeners = getParserListeners();
-	    for (ParserListener listener : listeners) {
-	        listener.onControllerEventParsed(controller, value);
-	    }
+	public void fireControllerEventParsed(MidiEvent event, byte controller, byte value) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onControllerEventParsed(controller, value);
+		}
 	}
 
 	public void fireLyricParsed(String lyric) { 
@@ -192,32 +193,32 @@ public class Parser {
 	    }
 	}
 
-    public void fireNotePressed(Note note) { 
-        List<ParserListener> listeners = getParserListeners();
-        for (ParserListener listener : listeners) {
-            listener.onNotePressed(note);
-        }
-    }   
+	public void fireNotePressed(MidiEvent event, Note note) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onNotePressed(note);
+		}
+	}
 
-    public void fireNoteReleased(Note note) { 
-        List<ParserListener> listeners = getParserListeners();
-        for (ParserListener listener : listeners) {
-            listener.onNoteReleased(note);
-        }
-    }   
+	public void fireNoteReleased(MidiEvent event, Note note) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onNoteReleased(note);
+		}
+	}
 
-	public void fireNoteParsed(Note note) { 
-	    List<ParserListener> listeners = getParserListeners();
-	    for (ParserListener listener : listeners) {
-	        listener.onNoteParsed(note);
-	    }
-	}	
+	public void fireNoteParsed(MidiEvent event, Note note) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onNoteParsed(note);
+		}
+	}
 
-    public void fireChordParsed(Chord chord) { 
-        List<ParserListener> listeners = getParserListeners();
-        for (ParserListener listener : listeners) {
-            listener.onChordParsed(chord);
-        }
-    }   
+	public void fireChordParsed(MidiEvent event, Chord chord) {
+		List<ParserListener> listeners = getParserListeners();
+		for (ParserListener listener : listeners) {
+			listener.onChordParsed(chord);
+		}
+	}
 	
 }

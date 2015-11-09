@@ -19,11 +19,7 @@
 
 package org.staccato;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.jfugue.midi.NullMidiEvent;
 import org.jfugue.parser.ParserException;
 import org.jfugue.provider.ChordProvider;
 import org.jfugue.provider.KeyProviderFactory;
@@ -31,6 +27,11 @@ import org.jfugue.provider.NoteProvider;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Intervals;
 import org.jfugue.theory.Note;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NoteSubparser implements Subparser, NoteProvider, ChordProvider {
 	private static NoteSubparser instance;
@@ -88,10 +89,10 @@ public class NoteSubparser implements Subparser, NoteProvider, ChordProvider {
             
             if (noteContext.isChord) {
             	Chord chord = noteContext.createChord(parserContext);
-            	parserContext.getParser().fireChordParsed(chord);
+                parserContext.getParser().fireChordParsed(new NullMidiEvent(), chord);
             } else {
 	            Note note = noteContext.createNote(parserContext);
-	            parserContext.getParser().fireNoteParsed(note);
+                parserContext.getParser().fireNoteParsed(new NullMidiEvent(), note);
             }
             
 //            // If the note is a chord, fire all the note events for each note in the chord 

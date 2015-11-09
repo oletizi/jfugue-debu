@@ -20,6 +20,7 @@
 package org.staccato;
 
 import org.jfugue.midi.MidiDictionary;
+import org.jfugue.midi.NullMidiEvent;
 
 /**
  * Parses Instrument, Voice, and Layer tokens. Each has values that are parsed as bytes. 
@@ -65,7 +66,9 @@ public class IVLSubparser implements Subparser
 				}
 			}
 			switch (music.charAt(0)) {
-				case INSTRUMENT: context.getParser().fireInstrumentParsed(value); break;
+				case INSTRUMENT:
+					context.getParser().fireInstrumentParsed(new NullMidiEvent(), value);
+					break;
 				case LAYER : context.getParser().fireLayerChanged(value); break;
 				case VOICE : context.getParser().fireTrackChanged(value); break;
 				default : break;
