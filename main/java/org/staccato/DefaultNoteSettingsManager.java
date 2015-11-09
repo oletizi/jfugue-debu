@@ -2,7 +2,9 @@ package org.staccato;
 
 import org.jfugue.midi.MidiDefaults;
 import org.jfugue.theory.Note;
+import org.junit.Ignore;
 
+@Ignore
 public class DefaultNoteSettingsManager {
 	private static DefaultNoteSettingsManager instance;
 	

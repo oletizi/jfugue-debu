@@ -19,8 +19,6 @@
 
 package org.staccato.functions;
 
-import static org.junit.Assert.assertTrue;
-
 import org.jfugue.pattern.Pattern;
 import org.jfugue.testtools.parser.JFugueTestHelper;
 import org.jfugue.theory.Chord;
@@ -31,6 +29,9 @@ import org.junit.Test;
 import org.staccato.DefaultNoteSettingsManager;
 import org.staccato.StaccatoParser;
 
+import static org.junit.Assert.assertTrue;
+
+@Ignore
 public class DefaultPreprocessorFunctionTest extends JFugueTestHelper {
 
 	@Test
